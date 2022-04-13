@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 配置环境：与数据库的连接信息
+        此配置了解即可，后期与spring框架整合之后，此配置会消失
+        -->
+    <environments default="mysql">
+        <environment id="mysql">
+            <!-- 配置事务：使用jdbc的事务管理 -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!-- 配置数据源：连接数据库的信息
+                type : 表示连接是否使用连接池，POOLED表示mybatis中自带的连接池
+             -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF8"/>
+                <property name="username" value="syh"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="mapper/Emp.xml"/>
+        <mapper resource="mapper/Dept.xml"/>
+    </mappers>
+</configuration>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="emp">
+    <select id="selectEmpByEmpno" parameterType="java.lang.Integer" resultType="com.newcapec.entity.Emp">
+        SELECT emp.empno,
+               emp.ename,
+               emp.job,
+               emp.mgr,
+               emp.hiredate,
+               emp.sal,
+               emp.comm,
+               emp.deptno
+        FROM emp
+        WHERE emp.empno = #{empno}
+    </select>
+
+    <select id="selectAllEmp" resultType="com.newcapec.entity.Emp">
+        SELECT emp.empno,
+               emp.ename,
+               emp.job,
+               emp.mgr,
+               emp.hiredate,
+               emp.sal,
+               emp.comm,
+               emp.deptno
+        FROM emp
+    </select>
+    
+    <!--模糊查询-->
+    <select id="selectEmpByName" parameterType="java.lang.String" resultType="com.newcapec.entity.Emp">
+        SELECT
+            emp.empno,
+            emp.ename,
+            emp.job,
+            emp.mgr,
+            emp.hiredate,
+            emp.sal,
+            emp.comm,
+            emp.deptno
+        FROM
+            emp
+        WHERE
+            ename LIKE concat('%',#{ename},'%')
+    </select>
+    
+
+    <insert id="insertEmp" parameterType="com.newcapec.entity.Emp" useGeneratedKeys="true" keyProperty="empno">
+       <!-- <selectKey resultType="java.lang.Integer" keyProperty="empno" order="AFTER">
+            select last_insert_id()
+        </selectKey>-->
+        INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+        VALUES (#{empno}, #{ename}, #{job}, #{mgr}, #{hiredate}, #{sal}, #{comm}, #{deptno})
+    </insert>
+
+    <update id="updateEmp" parameterType="com.newcapec.entity.Emp">
+        UPDATE emp
+        SET ename=#{ename},
+            job=#{job},
+            mgr=#{mgr},
+            hiredate=#{hiredate},
+            sal=#{sal},
+            comm=#{comm},
+            deptno=#{deptno}
+        WHERE empno = #{empno}
+    </update>
+    
+    <delete id="deleteEmp" parameterType="java.lang.Integer">
+        DELETE
+        FROM
+            emp
+        WHERE
+            empno = #{empno}
+    </delete>
+</mapper>

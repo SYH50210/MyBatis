@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newcapec.dao.DeptDao">
+
+    <select id="selectAll" resultType="com.newcapec.entity.Dept">
+        SELECT dept.deptno,
+               dept.dname,
+               dept.loc
+        FROM dept
+    </select>
+
+    <select id="selectDeptByDeptNo" parameterType="java.lang.Integer" resultType="com.newcapec.entity.Dept">
+        SELECT dept.deptno,
+               dept.dname,
+               dept.loc
+        FROM dept
+        where deptno = #{deptNo}
+    </select>
+
+    <!--模糊查询-->
+    <select id="selectDeptByDName" parameterType="java.lang.String" resultType="com.newcapec.entity.Dept">
+        SELECT dept.deptno,
+               dept.dname,
+               dept.loc
+        FROM dept
+        WHERE dept.dname LIKE concat('%', #{dName}, '%')
+    </select>
+
+    <insert id="insertDept" parameterType="com.newcapec.entity.Dept">
+        insert into dept (deptno, dname, loc)
+        values (#{deptNo}, #{dName}, #{loc});
+    </insert>
+
+    <update id="updateDept" parameterType="com.newcapec.entity.Dept">
+        update dept
+        set deptno = #{deptNo},
+            dname=#{dName},
+            loc=#{loc}
+        where deptno = #{deptNo};
+    </update>
+
+    <delete id="deleteDept" parameterType="java.lang.Integer">
+        delete
+        from dept
+        where deptno = #{deptNo};
+    </delete>
+</mapper>
