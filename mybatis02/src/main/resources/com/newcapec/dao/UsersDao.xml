@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newcapec.dao.UsersDao">
+    <select id="selectByRealname" parameterType="string" resultType="users">
+        select id, username, password, realname
+        from users
+        where realname like concat('%', #{realname}, '%')
+    </select>
+
+
+    <select id="selectByPage" parameterType="page" resultType="users">
+        select id, username, password, realname
+        from users
+        limit #{offset},#{pageSize}
+    </select>
+
+    <select id="selectByRealnameAndPage" parameterType="usersQuery" resultType="users">
+        select id, username, password, realname
+        from users
+        where realname like concat('%', #{users.realname}, '%')
+        order by id
+        limit #{page.offset}, #{page.pageSize}
+    </select>
+
+    <select id="selectAll" resultType="com.newcapec.entity.Users">
+        SELECT users.id,
+               users.username,
+               users.password,
+               users.realname
+        FROM users
+    </select>
+    <select id="selectUsersByHashMap" parameterType="hashmap" resultType="com.newcapec.entity.Users">
+        select id, username, password, realname
+        from users
+        where realname like concat('%', #{name}, '%')
+        limit #{begin}, #{size}
+    </select>
+    <select id="login" resultType="com.newcapec.entity.Users">
+        select id, username, password, realname
+        from users
+        where username = #{userName}
+          and password = #{userPwd};
+    </select>
+</mapper>

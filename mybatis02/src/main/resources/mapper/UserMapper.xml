@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newcapec.dao.UserDao">
+
+    <select id="selectAll" resultType="user">
+        SELECT sys_user.ID,
+               sys_user.NAME,
+               sys_user.ACCT,
+               sys_user.PWD,
+               sys_user.CRTIME,
+               sys_user.UPTIME
+        FROM sys_user
+    </select>
+
+    <select id="selectUserById" parameterType="int" resultType="User">
+        SELECT sys_user.ID,
+               sys_user.NAME,
+               sys_user.ACCT,
+               sys_user.PWD,
+               sys_user.CRTIME,
+               sys_user.UPTIME
+        FROM sys_user
+        where ID = #{id}
+    </select>
+
+    <!--模糊查询-->
+    <select id="selectUserByName" parameterType="string" resultType="User">
+        SELECT sys_user.ID,
+               sys_user.NAME,
+               sys_user.ACCT,
+               sys_user.PWD,
+               sys_user.CRTIME,
+               sys_user.UPTIME
+        FROM sys_user
+        where sys_user.NAME like concat('%', #{name}, '%')
+    </select>
+
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user (ID, NAME, ACCT, PWD, CRTIME, UPTIME)
+        values (#{id}, #{name}, #{acct}, #{pwd}, #{crtime}, #{uptime});
+    </insert>
+
+    <update id="updateUser" parameterType="user">
+        update sys_user
+        set ID= #{id},
+            NAME=#{name},
+            ACCT=#{acct},
+            PWD=#{pwd},
+            CRTIME=#{crtime},
+            UPTIME=#{uptime}
+        where ID = #{id};
+    </update>
+
+    <delete id="deleteUser" parameterType="integer">
+        delete
+        from sys_user
+        where ID = #{id};
+    </delete>
+</mapper>

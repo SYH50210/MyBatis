@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newcapec.dao.UserDao">
+
+    <select id="selectAll" resultType="user">
+        SELECT sys_user.ID,
+               sys_user.NAME,
+               sys_user.ACCT,
+               sys_user.PWD,
+               sys_user.CRTIME,
+               sys_user.UPTIME
+        FROM sys_user
+    </select>
+
+    <select id="selectUserById" parameterType="int" resultType="User">
+        SELECT sys_user.ID,
+               sys_user.NAME,
+               sys_user.ACCT,
+               sys_user.PWD,
+               sys_user.CRTIME,
+               sys_user.UPTIME
+        FROM sys_user
+        where ID = #{id}
+    </select>
+
+    <!--模糊查询-->
+    <select id="selectUserByName" parameterType="string" resultType="User">
+        SELECT sys_user.ID,
+               sys_user.NAME,
+               sys_user.ACCT,
+               sys_user.PWD,
+               sys_user.CRTIME,
+               sys_user.UPTIME
+        FROM sys_user
+        where sys_user.NAME like concat('%', #{name}, '%')
+    </select>
+
+    <select id="selectUser" resultType="com.newcapec.entity.User">
+        select id, name, acct, pwd, crtime, uptime
+        from sys_user
+        <where>
+            <if test="name!=null and name!=''">
+                name like concat('%', #{name}, '%')
+            </if>
+            <if test="id!=null">
+                and id > #{id}
+            </if>
+        </where>
+    </select>
+    <select id="selectUserTrim" parameterType="user" resultType="com.newcapec.entity.User">
+        select id, name, acct, pwd, crtime, uptime
+        from sys_user
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="name!=null and name!=''">
+                name like concat('%', #{name}, '%')
+            </if>
+            <if test="id!=null">
+                and id > #{id}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user (ID, NAME, ACCT, PWD, CRTIME, UPTIME)
+        values (#{id}, #{name}, #{acct}, #{pwd}, #{crtime}, #{uptime});
+    </insert>
+    <insert id="insertUserTrim" parameterType="user">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="acct!=null">
+                acct,
+            </if>
+            <if test="pwd!=null">
+                pwd,
+            </if>
+            <if test="crtime!=null">
+                crtime,
+            </if>
+            <if test="uptime!=null">
+                uptime,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="acct!=null">
+                #{acct},
+            </if>
+            <if test="pwd!=null">
+                #{pwd},
+            </if>
+            <if test="crtime!=null">
+                #{crtime},
+            </if>
+            <if test="uptime!=null">
+                #{uptime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUser" parameterType="user">
+        update sys_user
+        <set>
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="acct!=null">ACCT=#{acct},</if>
+            <if test="pwd!=null">PWD=#{pwd},</if>
+            <if test="crtime!=null">CRTIME=#{crtime},</if>
+            <if test="uptime!=null">UPTIME=#{uptime}</if>
+        </set>
+        where ID = #{id};
+    </update>
+
+    <delete id="deleteUser" parameterType="integer">
+        delete
+        from sys_user
+        where ID = #{id};
+    </delete>
+    <delete id="deleteUserForeach" parameterType="integer">
+        delete from sys_user where ID in 
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
