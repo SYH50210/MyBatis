@@ -14,6 +14,9 @@
         <!--开启延迟加载-->
         <setting name="lazyLoadingEnabled" value="true"/>
         <setting name="aggressiveLazyLoading" value="false"/>
+
+        <!-- 开启二级缓存-->
+        <setting name="cacheEnabled" value="true"/>
     </settings>
 
     <!--别名定义-->
@@ -21,6 +24,13 @@
         <!--批量定义别名-->
         <package name="com.newcapec.entity"/>
     </typeAliases>
+
+    <!-- 分页插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
 
     <environments default="mysql">
         <environment id="mysql">

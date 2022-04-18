@@ -25,13 +25,6 @@
         <package name="com.newcapec.entity"/>
     </typeAliases>
 
-    <!-- 分页插件 -->
-    <plugins>
-        <plugin interceptor="com.github.pagehelper.PageInterceptor">
-            <property name="reasonable" value="true"/>
-        </plugin>
-    </plugins>
-
     <environments default="mysql">
         <environment id="mysql">
             <transactionManager type="JDBC"/>
@@ -45,6 +38,6 @@
     </environments>
 
     <mappers>
-        <package name="com.newcapec.mapper"/>
+        <package name="com.newcapec.dao"/>
     </mappers>
 </configuration>

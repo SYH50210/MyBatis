@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newcapec.mapper.PersonMapper">
+
+    <cache/>
+    <select id="selectPersonById" parameterType="int" resultType="com.newcapec.entity.Person">
+        SELECT person.id,
+               person.person_name,
+               person.person_age,
+               person.person_address
+        FROM person
+        where id = #{id}
+    </select>
+</mapper>

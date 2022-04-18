@@ -45,4 +45,9 @@
             emp
         where deptno=#{deptno}
     </select>
+
+
+    <select id="selectByPage" resultType="com.newcapec.entity.Emp">
+        select empno,ename,job,mgr,hiredate,sal,comm,deptno from emp order by empno
+    </select>
 </mapper>
