@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newcapec.mapper.EmpMapper">
+
+
+    <resultMap id="selectResultMap" type="emp">
+        <id column="empno" property="empno"/>
+        <result column="ename" property="ename"/>
+        <result column="job" property="job"/>
+        <result column="mgr" property="mgr"/>
+        <result column="hiredate" property="hiredate"/>
+        <result column="sal" property="sal"/>
+        <result column="comm" property="comm"/>
+        <result column="deptno" property="deptno"/>
+
+        <!--一对一映射-->
+        <association property="dept" javaType="dept" select="com.newcapec.mapper.DeptMapper.selectDeptById" column="deptno"/>
+    </resultMap>
+
+    <select id="select" resultMap="selectResultMap">
+        SELECT emp.empno,
+               emp.ename,
+               emp.job,
+               emp.mgr,
+               emp.hiredate,
+               emp.sal,
+               emp.comm,
+               emp.deptno
+        FROM emp
+    </select>
+
+
+    <select id="selectByDeptno" parameterType="integer" resultType="com.newcapec.entity.Emp">
+        SELECT
+            emp.empno,
+            emp.ename,
+            emp.job,
+            emp.mgr,
+            emp.hiredate,
+            emp.sal,
+            emp.comm,
+            emp.deptno
+        FROM
+            emp
+        where deptno=#{deptno}
+    </select>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--加载properties文件-->
+    <properties resource="db.properties"/>
+
+    <!--开启下划线与驼峰命名转换-->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--别名定义-->
+    <typeAliases>
+        <!--批量定义别名-->
+        <package name="com.newcapec.entity"/>
+    </typeAliases>
+
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.mysql.driver}"/>
+                <property name="url" value="${jdbc.mysql.url}"/>
+                <property name="username" value="${jdbc.mysql.username}"/>
+                <property name="password" value="${jdbc.mysql.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <package name="com.newcapec.mapper"/>
+    </mappers>
+</configuration>

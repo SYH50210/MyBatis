@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newcapec.mapper.DeptMapper">
+
+
+    <select id="selectDeptById" parameterType="integer" resultType="com.newcapec.entity.Dept">
+        SELECT dept.deptno,
+               dept.dname,
+               dept.loc
+        FROM dept
+        where deptno = #{deptno}
+    </select>
+
+
+    <resultMap id="selectAllResult" type="dept">
+        <id column="deptno" property="deptno"/>
+        <result column="dname" property="dname"/>
+        <result column="loc" property="loc"/>
+
+        <!--关系映射:一对多-->
+        <collection property="empList" ofType="emp" select="com.newcapec.mapper.EmpMapper.selectByDeptno" column="deptno"/>
+    </resultMap>
+    <select id="selectAll" resultMap="selectAllResult">
+        SELECT dept.deptno,
+               dept.dname,
+               dept.loc
+        FROM dept
+    </select>
+</mapper>

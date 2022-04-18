@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newcapec.mapper.OrdersMapper">
+
+    <!--父resultMap标签-->
+    <resultMap id="baseResultMap" type="orders">
+        <id column="id" property="id"/>
+        <result column="order_number" property="orderNumber"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="status" property="status"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+
+    <!--通过resultType方式实现-->
+    <select id="selectOrderResultType" resultType="ordersQuery">
+        SELECT a.id,
+               a.order_number,
+               a.total_price,
+               a.`status`,
+               a.user_id,
+               b.username,
+               b.`password`,
+               b.realname
+        FROM orders AS a,
+             users AS b
+        WHERE a.user_id = b.id
+
+    </select>
+
+    <!--创建映射-->
+    <resultMap id="selectOneToOne" type="orders" extends="baseResultMap">
+        <association property="users" javaType="users">
+            <id column="user_id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="realname" property="realname"/>
+        </association>
+    </resultMap>
+
+    <select id="findOneToOne" resultMap="selectOneToOne">
+        SELECT a.id,
+               a.order_number,
+               a.total_price,
+               a.`status`,
+               a.user_id,
+               b.username,
+               b.`password`,
+               b.realname
+        FROM orders AS a,
+             users AS b
+        WHERE a.user_id = b.id
+    </select>
+
+    <!--定义映射关系-->
+    <resultMap id="selectOneToMany" type="orders" extends="baseResultMap">
+        <association property="users" javaType="users">
+            <id column="user_id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="realname" property="realname"/>
+        </association>
+
+        <collection property="ordersDetailList" ofType="ordersDetail">
+            <id column="detail_id" property="id"/>
+            <result column="amount" property="amount"/>
+            <result column="goods_id" property="goodsId"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="findOneToMany" resultMap="selectOneToMany">
+        SELECT a.id,
+               a.order_number,
+               a.total_price,
+               a.`status`,
+               a.user_id,
+               b.username,
+               b.`password`,
+               b.realname,
+               c.id detail_id,
+               c.amount,
+               c.goods_id
+        FROM orders AS a
+                 INNER JOIN users AS b ON a.user_id = b.id
+                 INNER JOIN orders_detail AS c ON a.id = c.orders_id
+
+    </select>
+
+    <!--定义映射关系-->
+    <resultMap id="selectManyToMany" type="orders" extends="baseResultMap">
+        <association property="users" javaType="users">
+            <id column="user_id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="realname" property="realname"/>
+        </association>
+
+        <collection property="ordersDetailList" ofType="ordersDetail">
+            <id column="detail_id" property="id"/>
+            <result column="amount" property="amount"/>
+            <result column="goods_id" property="goodsId"/>
+            <association property="goods" javaType="goods">
+                <id column="goods_id" property="id"/>
+                <result column="goods_name" property="goodsName"/>
+                <result column="description" property="description"/>
+                <result column="price" property="price"/>
+            </association>
+        </collection>
+
+    </resultMap>
+
+    <select id="findManyToMany" resultMap="selectManyToMany">
+        SELECT a.id,
+               a.order_number,
+               a.total_price,
+               a.`status`,
+               a.user_id,
+               b.username,
+               b.`password`,
+               b.realname,
+               c.id AS detail_id,
+               c.amount,
+               c.goods_id,
+               d.goods_name,
+               d.description,
+               d.price
+        FROM orders AS a
+                 INNER JOIN users AS b ON a.user_id = b.id
+                 INNER JOIN orders_detail AS c ON a.id = c.orders_id
+                 INNER JOIN goods AS d ON c.goods_id = d.id
+    </select>
+</mapper>
